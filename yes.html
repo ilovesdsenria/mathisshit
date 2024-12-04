@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #333;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      max-width: 90%;
+    }
+    .gallery img, .gallery video {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .gallery img:hover, .gallery video:hover {
+      transform: scale(1.05);
+      opacity: 0.8;
+      transition: transform 0.2s, opacity 0.3s;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal img, .modal video {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+<h1>Ну конечно! Он нам не нужен!</h1>
+<div class="gallery" id="gallery"></div>
+
+<!-- Modal for images and videos -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <img id="modalImage" src="" alt="Modal Image" style="display: none;">
+  <video id="modalVideo" controls style="display: none;"></video>
+</div>
+
+<script>
+  const mediaPaths = [
+    'photos/img.png',
+    'photos/img_1.png',
+    'photos/IMG_2880.jpg',
+    'photos/math.mp4',
+    'photos/T.mp4',
+    'photos/img_3.png'
+  ];
+
+  const gallery = document.getElementById('gallery');
+  const modal = document.getElementById('modal');
+  const modalImage = document.getElementById('modalImage');
+  const modalVideo = document.getElementById('modalVideo');
+
+  // Create gallery
+  mediaPaths.forEach(src => {
+    const extension = src.split('.').pop().toLowerCase();
+    if (['png', 'jpg', 'jpeg'].includes(extension)) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Gallery Image';
+      img.onclick = () => openModal('image', src);
+      gallery.appendChild(img);
+    } else if (['mp4', 'webm', 'ogg'].includes(extension)) {
+      const video = document.createElement('video');
+      video.src = src;
+      video.muted = true; // Muted in gallery view
+      video.loop = true;
+      video.play();
+      video.onclick = () => openModal('video', src);
+      gallery.appendChild(video);
+    }
+  });
+
+  // Open modal with selected media
+  function openModal(type, src) {
+    modal.style.display = 'flex';
+    if (type === 'image') {
+      modalImage.style.display = 'block';
+      modalVideo.style.display = 'none';
+      modalImage.src = src;
+    } else if (type === 'video') {
+      modalVideo.style.display = 'block';
+      modalImage.style.display = 'none';
+      modalVideo.src = src;
+      modalVideo.play();
+    }
+  }
+
+  // Close modal
+  function closeModal() {
+    modal.style.display = 'none';
+    modalVideo.pause();
+    modalVideo.src = '';
+  }
+</script>
+</body>
+</html>

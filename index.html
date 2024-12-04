@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .btn {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <h1 class="header_text">Матанализ бесполезен?</h1>
+    </div>
+
+    <div class="gif_container">
+      <img src="https://i.gifer.com/4yd.gif" alt="math " />
+    </div>
+    <div class="buttons">
+      <button class="btn" id="yesButton" onclick="redirectToPage('yes.html')">Да, конечо</button>
+      <button class="btn" id="noButton" onmouseover="moveButton()">НЕТ!</button>
+
+      <script>
+        function redirectToPage(page) {
+          window.location.href = page;
+        }
+
+        function moveButton() {
+          const noButton = document.getElementById("noButton");
+          const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+          const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+          noButton.style.left = `${x}px`;
+          noButton.style.top = `${y}px`;
+        }
+      </script>
+    </div>
+  </div>
+</body>
+
+</html>
